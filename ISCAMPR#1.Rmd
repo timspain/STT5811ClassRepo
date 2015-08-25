@@ -1,0 +1,109 @@
+---
+title: "ISCAM PR#1"
+output: html_document
+---
+
+# Random Babies parts I and O
+
+I.
+For this question, we were asked to use the Random Babies applet to try 1000 trials and complete the table below.  Using the applet, I returned the following data which I have placed in the table:
+
+Number of matches|0|1|2|3|4
+-----------------|-|-|-|-|----
+Proportion |0.369| 0.342| 0.239 | 0 |0.050
+
+By looking at notes that were placed in the repository for the class, I found the code for running this experiment in R.  I am placing that code here for comparison.
+```{r}
+babies <- c("Marvin", "Willie", "Billy", "Sam")
+shuffle <- sample(babies, size = 4, replace = FALSE)
+shuffle
+babies == shuffle
+NumberCorrect <- sum(babies == shuffle)
+nights <- 100000
+NumberCorrect <- numeric(nights)
+for(i in 1:nights){
+  shuffle <- sample(babies, size = 4, replace = FALSE)
+  NumberCorrect[i] <- sum(babies == shuffle)
+}
+xtabs(~NumberCorrect)
+TAsi <- xtabs(~NumberCorrect)/nights
+TAsi
+```
+There are naturally differences between the code that was done in R and the applet answers.  Both the R code and the applet are examples of experimental probability. The code and the applet are running virtual experiments to obtain the proportion of correct returns.
+
+O.
+We were given a sample space of all possible outcomes for returning the babies to their mothers.  In total, there are 24 possible outcomes for returning the babies. The probability of any one of the outcomes is 1/24.
+
+# Friend or Foe?
+
+A.  Here is my bar graph.  We were told that 14 of 16 babies chose the helper figure.
+```{r}
+observed = data.frame(Toy = factor(c("helper", "hinderer")),Proportion = c(0.875, 0.125))
+barplot(observed$Proportion, names = observed$Toy, xlab = "Toy", ylab = "Proportion", main = "Initial Observation" )
+```
+From the bar graph, 7/8th of the babies chose the helper toy.  This is far more than half.
+
+F.  It is important for us to look at the "Could have been" results so that we can determine if there truly is any statistical significance to the question. If we look at these "could have been" results, we can distinguish between coincidence and something actually influencing the baby's choice.
+
+G. We can model the "could have been" results using a coin.  In this simulation, I will assign the outcome of heads (0) to the helper toy and tails (1) to the hinderer toy. The code for this is below.
+``` {r}
+sample(0:1,16, replace = TRUE)
+xtabs(~sample(1:1,16, replace = TRUE))
+
+trials <- 1
+toy <- c("helper", "hinderer")
+helper <- numeric(trials)
+for(i in 1:trials){
+toys <-sample(toy, size = 16, replace = TRUE)
+helper[i] <- xtabs (~toys)[1]
+}
+helper
+```
+Could Have Been Outcomes | Heads | Tails
+------------------------- | ------ | -------
+Totals | `r helper [1]` | `r 16 - helper[1]`
+
+H.  For this segment, we repeated the coin flip trial two more times, keeping track of how many babies chose the helper toy. Here is the code and results for this question.
+``` {r}
+sample(0:1,16, replace = TRUE)
+xtabs(~sample(1:3,16, replace = TRUE))
+
+trials <- 3
+toy <- c("helper", "hinderer")
+helper <- numeric(trials)
+for(i in 1:trials){
+toys <-sample(toy, size = 16, replace = TRUE)
+helper[i] <- xtabs (~toys)[1]
+}
+helper
+```
+Repetition Number | 1 | 2 | 3
+---------------- | --- | --- | ----
+Number who chose helper | `r helper [1]` | `r helper [2]` | `r helper [3]`
+
+L. Using the applet, I had the results of 9 heads and 7 tails.
+
+M. I continued with the applet, performing 4 more trials (for a total of 5 including the one from question L).  I did not get the same number of heads each time.  Below is my table with my data.
+
+Trial Number | Heads | Tails
+------------ | ----- | -----
+1 | 9 | 7
+2 | 9 | 7
+3 | 5 | 11
+4 | 6 | 10
+5 | 11 | 5
+
+# Reproducible Research Chapter 1 & 2 Summary
+
+  The book **Reproducible Research with R and R Studio** is meant to give students an overview of how to reproduce and create reproducible research using the statistical programming language R.  This is a summary of the first two chapters in the text.
+
+  Chapter 1 is a basic overview of the topic.  The author starts out by explaining what reproducible research is and why it is important.  He grounds his argument with the explanation that science depends on experiments being reproducible to confirm new discoveries.  Without this reproducibility, new discoveries can't be confirmed.  The author also emphasizes that we often reproduce parts of our data when we add variables or reexamine statistical questions. The author advocates for this type of research in order to save the researcher time and effort in the long run.
+
+  Also in Chapter 1, the author goes through the various tools one might use to create reproducible research.  He not only describes the software, but he also goes through the installation process for the software.  Finally, he includes some tips on how to read the book.
+
+  Chapter 2 is meant to get students/researchers started with reproducible research.  This chapter is a natural flow from the first chapter.  I found the diagram for the workflow with reproducible research to be very helpful.  It gives the reader a clear, visual reference on how the process should work. The author treats this chapter as a very basic "getting started" guide for someone that is new to reproducible research and to R/R Studio.
+
+
+
+
+
